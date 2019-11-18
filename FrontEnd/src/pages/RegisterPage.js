@@ -30,7 +30,6 @@ class RegisterPage extends React.Component {
           formData.append("passCode",values.password);
           console.log(values.password);
           formData.append("name",values.name);
-          formData.append("idCardNumber",values.idCardNumber);
 
           const init = {
               method:'POST',
@@ -168,11 +167,6 @@ class RegisterPage extends React.Component {
               {getFieldDecorator('name', {
                 rules: [{ required: true, message: '输入您的姓名!', whitespace: true }],
               })(<Input />)}
-            </Form.Item>
-            <Form.Item label="身份证号">
-              {getFieldDecorator('idCardNumber', {
-                rules: [{ required: true, message: '请输入您的身份证号!' }],
-              })(<Input style={{ width: '100%' }} />)}
             </Form.Item>
             
             <Form.Item {...tailFormItemLayout}>
