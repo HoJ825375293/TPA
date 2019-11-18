@@ -18,13 +18,13 @@ const tabListNoTitle = [
 
 const contentListNoTitle = {
   Atlas: <EchartsAtlas path='/'></EchartsAtlas>,
-  Other: <EchartsAtlas path='/'></EchartsAtlas>,
+  Other: <div>NOT YET</div>
 };
 class HomePage extends React.Component {
 
   state={
     key: 'tab1',
-    noTitleKey: 'Hotel',
+    noTitleKey: 'tab2',
   }
 
   onTabChange = (key) => {
@@ -51,14 +51,13 @@ class HomePage extends React.Component {
             <AccountBar path='/'/>
           </Col>
         </Row>
-        <Row style={{ height:20 }}></Row>
+        <Row style={{ height:25 }}></Row>
         <div>
         <Row>
           <Col span={3}/>
           <Col span={18} >
-              <Row style={{ height:150 }}></Row>
               <Row style={{ height:100, fontSize:60 }} type="flex" justify="center" align="middle">
-                  Travel Helper
+                  Tang Poetry Atlas
               </Row>
               <Row style={{ height:50 }}></Row>
               <Card
@@ -74,7 +73,6 @@ class HomePage extends React.Component {
           </Col>
           <Col span={3}/>
         </Row>
-        <Row style={{ height:450 }}/>  
         </div>
       </div>
     );
