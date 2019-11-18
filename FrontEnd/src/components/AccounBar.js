@@ -38,7 +38,7 @@ class AccountBar extends Component {
     }
     //判断是否登陆，进而返回不同的组件
     isLogin=()=>{
-        const userName = this.state.UserName.substring(0,3);
+        const userName = this.state.UserName.substring(0,1);
         const modeType = this.state.mode;
         if(modeType === 1){
             return (
