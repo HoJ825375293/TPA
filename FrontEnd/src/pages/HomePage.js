@@ -1,19 +1,25 @@
 import React from 'react';
 import { Row, Col, Card } from 'antd';
+import EchartsAtlas from '../components/EchartsAtlas';
+// import Compre from '../components/Compre';
 import AccountBar from '../components/AccounBar';
 import store from '../store'
 
 const tabListNoTitle = [
   {
-    key: 'Hotea',
-    tab: 'Hotea',
+    key: 'Atlas',
+    tab: 'Atlas',
   },
   {
-    key: 'Ticket',
-    tab: 'Ticket',
+    key: 'Other',
+    tab: 'Other',
   },
 ];
 
+const contentListNoTitle = {
+  Atlas: <EchartsAtlas path='/'></EchartsAtlas>,
+  Other: <EchartsAtlas path='/'></EchartsAtlas>,
+};
 class HomePage extends React.Component {
 
   state={
@@ -45,15 +51,14 @@ class HomePage extends React.Component {
             <AccountBar path='/'/>
           </Col>
         </Row>
-        
         <Row style={{ height:20 }}></Row>
-
         <div>
         <Row>
-          <Col span={5}/>
-          <Col span={14} >
+          <Col span={3}/>
+          <Col span={18} >
+              <Row style={{ height:150 }}></Row>
               <Row style={{ height:100, fontSize:60 }} type="flex" justify="center" align="middle">
-                  唐诗图谱
+                  Travel Helper
               </Row>
               <Row style={{ height:50 }}></Row>
               <Card
@@ -64,9 +69,10 @@ class HomePage extends React.Component {
                   this.onTabChange(key);
                 }}
               >
+                {contentListNoTitle[this.state.noTitleKey]}
               </Card>
           </Col>
-          <Col span={5}/>
+          <Col span={3}/>
         </Row>
         <Row style={{ height:450 }}/>  
         </div>
