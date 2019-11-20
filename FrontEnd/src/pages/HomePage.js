@@ -45,21 +45,21 @@ class HomePage extends React.Component {
   render() {
     return (  
       <div>
-        <Row style={{ height:50 }}>
+        {/* <Row style={{ height:50 }}>
           <Col span={19}/>
           <Col span={5} style={{paddingLeft:50, paddingTop:20}}>
             <AccountBar path='/'/>
           </Col>
-        </Row>
+        </Row> */}
         <Row style={{ height:25 }}></Row>
         <div>
         <Row>
-          <Col span={3}/>
-          <Col span={18} >
-              <Row style={{ height:100, fontSize:60 }} type="flex" justify="center" align="middle">
+          <Col span={2}/>
+          <Col span={20} >
+              <Row style={{ height:75, fontSize:55 }} type="flex" justify="center" align="middle">
                   Tang Poetry Atlas
               </Row>
-              <Row style={{ height:50 }}></Row>
+              <Row style={{ height:25 }}></Row>
               <Card
                 style={{ width: '100%'}}
                 tabList={tabListNoTitle}
@@ -71,7 +71,7 @@ class HomePage extends React.Component {
                 {contentListNoTitle[this.state.noTitleKey]}
               </Card>
           </Col>
-          <Col span={3}/>
+          <Col span={2}/>
         </Row>
         </div>
       </div>

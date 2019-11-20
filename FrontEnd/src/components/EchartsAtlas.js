@@ -12,8 +12,6 @@ class EchartsAtlas extends Component {
         this.timer = null;
         this.Stop = this.Stop.bind(this);
     }
-
-    
     
     Stop(){
         if(this.timer){
@@ -57,10 +55,6 @@ class EchartsAtlas extends Component {
             if(me.state.timer == me.state.max){
                 me.Stop();
             }
-            console.log(me.state.timer);
-            console.log(me.timer)
-            console.log(data);
-            console.log(edges);
             
             data.push({
                 id: data.length
@@ -92,9 +86,7 @@ class EchartsAtlas extends Component {
 
     render(){
         return (
-            <div>
             <div id = "Atlas" style = {{width:600, height:400}}> </div>
-            </div>
         );
     }
 }
