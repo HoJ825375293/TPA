@@ -2,45 +2,45 @@ import React from 'react';
 import { Row, Col, Card } from 'antd';
 import EchartsAtlas from '../components/EchartsAtlas';
 // import Compre from '../components/Compre';
-import AccountBar from '../components/AccounBar';
-import store from '../store'
+// import AccountBar from '../components/AccounBar';
+// import store from '../store'
 
-const tabListNoTitle = [
+const tabList = [
   {
     key: 'Atlas',
     tab: 'Atlas',
   },
   {
-    key: 'Other',
-    tab: 'Other',
+    key: 'Statistic',
+    tab: 'Statistic',
   },
 ];
 
-const contentListNoTitle = {
+const contentList = {
   Atlas: <EchartsAtlas path='/'></EchartsAtlas>,
-  Other: <div>NOT YET</div>
+  Statistic: <div>NOT YET</div>
 };
+
 class HomePage extends React.Component {
 
   state={
-    key: 'tab1',
-    noTitleKey: 'tab2',
+    Key: 'Atlas'
   }
 
   onTabChange = (key) => {
-    this.setState({ noTitleKey: key });
-    const action={
-      type:"changeHomePageBar",
-      key:key,
-    }
-    store.dispatch(action);
+    this.setState({ Key: key });
+    // const action={
+    //   type:"changeHomePageBar",
+    //   key:key,
+    // }
+    // store.dispatch(action);
   };
 
-  componentWillMount(){
-    var data = store.getState();
-    if(data.homePageKey !== null)
-    this.setState({ noTitleKey: data.homePageKey });
-  }
+  // componentWillMount(){
+  //   var data = store.getState();
+  //   if(data.homePageKey !== null)
+  //   this.setState({ noTitleKey: data.homePageKey });
+  // }
 
   render() {
     return (  
@@ -52,7 +52,7 @@ class HomePage extends React.Component {
           </Col>
         </Row> */}
         <Row style={{ height:25 }}></Row>
-        <div>
+        
         <Row>
           <Col span={2}/>
           <Col span={20} >
@@ -62,18 +62,18 @@ class HomePage extends React.Component {
               <Row style={{ height:25 }}></Row>
               <Card
                 style={{ width: '100%'}}
-                tabList={tabListNoTitle}
-                activeTabKey={this.state.noTitleKey}
+                tabList={tabList}
+                activeTabKey={this.state.Key}
                 onTabChange={key => {
                   this.onTabChange(key);
                 }}
               >
-                {contentListNoTitle[this.state.noTitleKey]}
+                {contentList[this.state.Key]}
               </Card>
           </Col>
           <Col span={2}/>
         </Row>
-        </div>
+        
       </div>
     );
   }
