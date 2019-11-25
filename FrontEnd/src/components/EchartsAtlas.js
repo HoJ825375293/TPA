@@ -1,5 +1,6 @@
 import React, { Component,Fragment } from 'react';
 import { Button,Input, Tooltip, Select } from 'antd';
+import { GmlData } from './GmlData';
 
 var echarts = require('echarts');
 const InputGroup = Input.Group;
@@ -13,18 +14,18 @@ class EchartsAtlas extends Component {
             max: 75,
             from:"",
             to:"",
-            selc:1
+            selc:"1"
         }
-        this.timer = null;
-        this.Stop = this.Stop.bind(this);
+        // this.timer = null;
+        // this.Stop = this.Stop.bind(this);
     }
     
-    Stop(){
-        if(this.timer){
-            clearInterval(this.timer);
-            this.timer = null;
-        }
-    }
+    // Stop(){
+    //     if(this.timer){
+    //         clearInterval(this.timer);
+    //         this.timer = null;
+    //     }
+    // }
 
     componentDidMount(){
         const me = this;
@@ -75,6 +76,7 @@ class EchartsAtlas extends Component {
         
         myChart.setOption({
             series: [{
+                roam: true,
                 type: 'graph',
                 layout: 'force',
                 animation: false,
@@ -106,38 +108,37 @@ class EchartsAtlas extends Component {
                 }]
         })
 
-        this.timer = setInterval(function(){
-            me.setState({
-                timer:me.state.timer + 1
-            })
-            if(me.state.timer == me.state.max){
-                me.Stop();
-            }
+        // this.timer = setInterval(function(){
+        //     me.setState({
+        //         timer:me.state.timer + 1
+        //     })
+        //     if(me.state.timer == me.state.max){
+        //         me.Stop();
+        //     }
             
-            data.push({
-                id: data.length
-            });
-            var source = Math.round((data.length - 1) * Math.random());
-            var target = Math.round((data.length - 1) * Math.random());
-            if (source !== target) {
-                edges.push({
-                    source: source,
-                    target: target
-                });
+        //     data.push({
+        //         id: data.length
+        //     });
+        //     var source = Math.round((data.length - 1) * Math.random());
+        //     var target = Math.round((data.length - 1) * Math.random());
+        //     if (source !== target) {
+        //         edges.push({
+        //             source: source,
+        //             target: target
+        //         });
 
-                myChart.setOption({
-                    series: [{
-                        roam: true,
-                        data: data,
-                        edges: edges
-                    }]
-                })
-            } 
-        },100)
+        //         // myChart.setOption({
+        //         //     series: [{
+        //         //         data: data,
+        //         //         edges: edges
+        //         //     }]
+        //         // })
+        //     } 
+        // },100)
 
         
     };
-    
+
     handleFrom(event){
         if(event && event.target && event.target.value){
             let value = event.target.value;
@@ -153,21 +154,25 @@ class EchartsAtlas extends Component {
     }
 
     handleIn(){
+        if(this.state.selc === "1"){
+
+        }else if(this.state.selc === "2"){
+
+        }
         console.log(this.state)
     }
 
     handleSelect(value){
         this.setState({selc:value});
-        console.log(value)
     }
 
-    componentWillUnmount() {
-        clearInterval(this.timer);
-    }
+    // componentWillUnmount() {
+    //     clearInterval(this.timer);
+    // }
 
     SearchBar=()=>{
         const modeType = this.state.selc;
-        if(modeType == 1){
+        if(modeType === "1"){
             return (
                 <Fragment>
                     <InputGroup compact onSearch={value => console.log(value)}>
@@ -176,11 +181,12 @@ class EchartsAtlas extends Component {
                         <Option value="2">关系图</Option>
                         </Select>
                     
-                        <Tooltip title="属性可以是时间,地点,景物,人">
+                        <Tooltip title="属性可以是任何时间,地点,景物,人">
                         <Input
                         style={{ width: 180, textAlign: 'center' }}
                         placeholder="请输入查询属性"
                         onChange={event => this.handleFrom(event)}
+                        allowClear = {true}
                         />
                         </Tooltip>
                         <Button type="primary" onClick={()=>{this.handleIn()}}>搜索</Button>
@@ -188,20 +194,21 @@ class EchartsAtlas extends Component {
                 </Fragment>
             );
         }
-        else if(modeType == 2){
+        else if(modeType === "2"){
             return (
                 <Fragment>
                     <InputGroup compact onSearch={value => console.log(value)}>
-                        <Select defaultValue="1" onChange={(value)=>this.handleSelect(value)}>
+                        <Select defaultValue="2" onChange={(value)=>this.handleSelect(value)}>
                         <Option value="1">属性图</Option>
                         <Option value="2">关系图</Option>
                         </Select>
                     
-                        <Tooltip title="属性可以是时间,地点,景物,人">
+                        <Tooltip title="属性可以是任何时间,地点,景物,人">
                         <Input
                         style={{ width: 180, textAlign: 'center' }}
                         placeholder="请输入查询属性"
                         onChange={event => this.handleFrom(event)}
+                        allowClear = {true}
                         />
                         </Tooltip>
                         <Input
@@ -218,6 +225,7 @@ class EchartsAtlas extends Component {
                         style={{ width: 180, textAlign: 'center' }}
                         placeholder="请输入查询属性"
                         onChange={event => this.handleTo(event)}
+                        allowClear = {true}
                         />
                         </Tooltip>
                         <Button type="primary" onClick={()=>{this.handleIn()}}>搜索</Button>
