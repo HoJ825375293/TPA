@@ -7,40 +7,29 @@ import EchartsAtlas from '../components/EchartsAtlas';
 
 const tabList = [
   {
-    key: 'Atlas',
-    tab: 'Atlas',
+    key: '图谱',
+    tab: '图谱',
   },
   {
-    key: 'Statistic',
-    tab: 'Statistic',
+    key: '统计',
+    tab: '统计',
   },
 ];
 
 const contentList = {
-  Atlas: <EchartsAtlas path='/'></EchartsAtlas>,
-  Statistic: <div>NOT YET</div>
+  图谱: <EchartsAtlas path='/'></EchartsAtlas>,
+  统计: <div>NOT YET</div>
 };
 
 class HomePage extends React.Component {
 
   state={
-    Key: 'Atlas'
+    Key: '图谱'
   }
 
   onTabChange = (key) => {
     this.setState({ Key: key });
-    // const action={
-    //   type:"changeHomePageBar",
-    //   key:key,
-    // }
-    // store.dispatch(action);
   };
-
-  // componentWillMount(){
-  //   var data = store.getState();
-  //   if(data.homePageKey !== null)
-  //   this.setState({ noTitleKey: data.homePageKey });
-  // }
 
   render() {
     return (  
@@ -51,17 +40,15 @@ class HomePage extends React.Component {
             <AccountBar path='/'/>
           </Col>
         </Row> */}
-        <Row style={{ height:25 }}></Row>
+        <Row style={{ height:15 }}></Row>
         
         <Row>
-          <Col span={2}/>
-          <Col span={20} >
-              <Row style={{ height:75, fontSize:55 }} type="flex" justify="center" align="middle">
-                  Tang Poetry Atlas
-              </Row>
-              <Row style={{ height:25 }}></Row>
+          <Col span={1}/>
+          <Col span={22} >
+              <Row style={{ height:5 }}></Row>
               <Card
                 style={{ width: '100%'}}
+                title="唐诗图谱demo"
                 tabList={tabList}
                 activeTabKey={this.state.Key}
                 onTabChange={key => {
@@ -71,7 +58,7 @@ class HomePage extends React.Component {
                 {contentList[this.state.Key]}
               </Card>
           </Col>
-          <Col span={2}/>
+          <Col span={1}/>
         </Row>
         
       </div>
