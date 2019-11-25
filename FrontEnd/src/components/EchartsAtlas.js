@@ -25,35 +25,52 @@ class EchartsAtlas extends Component {
             this.timer = null;
         }
     }
+
     componentDidMount(){
         const me = this;
         var myChart = echarts.init(document.getElementById("Atlas"));
         var data = [{
             fixed: true,
-            x: myChart.getWidth() / 5,
-            y: myChart.getHeight() / 5,
-            symbolSize: 20,
-            id: '-1'
-            },{
-                fixed: true,
-                x: myChart.getWidth()*2 / 5,
-                y: myChart.getHeight() / 5,
-                symbolSize: 20,
-                id: '-2'
-            },{
-                fixed: true,
-                x: myChart.getWidth()*3 / 5,
-                y: myChart.getHeight() / 5,
-                symbolSize: 20,
-                id: '-3'
-            },{
-                fixed: true,
-                x: myChart.getWidth()*4 / 5,
-                y: myChart.getHeight() / 5,
-                symbolSize: 20,
-                id: '-4'
-            }
-            ];
+            name: '时间',
+            itemStyle: {
+                color: 'rgb(123,104,238)'
+            },
+            x: myChart.getWidth() / 8,
+            y: myChart.getHeight() / 6,
+            symbolSize: 30,
+            id: 0
+        },{
+            fixed: true,
+            name: '地点',
+            itemStyle: {
+                color: 'rgb(65,105,225)'
+            },
+            x: myChart.getWidth()*3 / 8,
+            y: myChart.getHeight() / 6,
+            symbolSize: 30,
+            id: 1627
+        },{
+            fixed: true,
+            name: '景物',
+            itemStyle: {
+                color: 'rgb(34,139,34)'
+            },
+            x: myChart.getWidth()*5 / 8,
+            y: myChart.getHeight() / 6,
+            symbolSize: 30,
+            id: 357
+        },{
+            fixed: true,
+            name: '人',
+            itemStyle: {
+                color: 'rgb(255,69,0)'
+            },
+            x: myChart.getWidth()*7 / 8,
+            y: myChart.getHeight() / 6,
+            symbolSize: 30,
+            id: 2700
+        }
+        ];
         var edges = [];
         
         myChart.setOption({
@@ -61,11 +78,28 @@ class EchartsAtlas extends Component {
                 type: 'graph',
                 layout: 'force',
                 animation: false,
+                focusNodeAdjacency:true,
+                itemStyle: {
+                    normal: {
+                        borderColor: '#fff',
+                        borderWidth: 1,
+                        shadowBlur: 10,
+                        shadowColor: 'rgba(0, 0, 0, 0.3)'
+                    }
+                },
+                label: {
+                    show:true,
+                    position: 'right',
+                    formatter: '{b}'
+                },
+                lineStyle: {
+                    color: 'source',
+                },
                 data: data,
                 force: {
                     // initLayout: 'circular'
                     // gravity: 0
-                    repulsion: 100,
+                    repulsion: 50,
                     edgeLength: 5
                 },
                 edges: edges
@@ -99,7 +133,7 @@ class EchartsAtlas extends Component {
                     }]
                 })
             } 
-        },500)
+        },100)
 
         
     };
