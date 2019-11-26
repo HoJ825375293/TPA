@@ -15,13 +15,11 @@ var edges = [];
 var myChart;
 var tempData = [];
 var map = [];
+var from;
 class EchartsAtlas extends Component {
     constructor(props){
         super(props)
         this.state={
-            timer:0,
-            max: 75,
-            from:"",
             to:"",
             selc:"1"
         }
@@ -66,12 +64,12 @@ class EchartsAtlas extends Component {
         })
     };
 
-    handleFrom(event){
-        if(event && event.target && event.target.value){
-            let value = event.target.value;
-            this.setState({from:value })
-        }
-    }
+    // handleFrom(event){
+    //     if(event && event.target && event.target.value){
+    //         let value = event.target.value;
+    //         this.setState({from:value })
+    //     }
+    // }
 
     handleTo(event){
         if(event && event.target && event.target.value){
@@ -119,7 +117,7 @@ class EchartsAtlas extends Component {
             edges = [];
             let tempName = "";
             const nodeName = this.state.from;
-            if(nodeName === ""){
+            if(nodeName === "" || nodeName === undefined){
                 message.error('要有输入才合法哦!');
             }else{
                 let i,j,k;
@@ -212,7 +210,8 @@ class EchartsAtlas extends Component {
         }else if(this.state.selc === "2"){
             const nodeName = this.state.from;
             const nodeName2 = this.state.to;
-            if(nodeName === "" || nodeName2 === ""){
+            if(nodeName === "" || nodeName2 === ""
+            || nodeName === undefined || nodeName2 === undefined){
                 message.error('要有两个输入才合法哦!');
             }else{
                 data = [];
@@ -303,23 +302,18 @@ class EchartsAtlas extends Component {
     }
 
     onChange(value) {
-        console.log(`selected ${value}`);
-    }
-      
-     onBlur() {
-        console.log('blur');
-    }
-      
-    onFocus() {
-        console.log('focus');
+        from = value
+        console.log(from)
     }
       
     onSearch(val) {
-        console.log('search:', val);
+        from = val
+        console.log(from)
     }
 
     SearchBar=()=>{
         const modeType = this.state.selc;
+
         if(modeType === "1"){
             return (
                 <Fragment>
@@ -330,25 +324,14 @@ class EchartsAtlas extends Component {
                         </Select>
                     
                         <Tooltip title="属性可以是任何时间,地点,景物,人">
-                        <Input
-                        style={{ width: 180, textAlign: 'center' }}
-                        placeholder="请输入查询属性"
-                        onChange={event => this.handleFrom(event)}
-                        allowClear = {true}
-                        />
                         <Select
                         showSearch
                         style={{ width: 200, textAlign: 'center' }}
                         allowClear = {true}
-                        placeholder="Select a person"
-                        optionFilterProp="children"
+                        placeholder="点击--这里是一些示例"
                         onChange={this.onChange}
-                        onFocus={this.onFocus}
-                        onBlur={this.onBlur}
                         onSearch={this.onSearch}
-                        filterOption={(input, option) =>
-                        option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                        }
+                        notFoundContent={null}
                         >
                             <Option value="送别">送别</Option>
                             <Option value="李清照">李清照</Option>
