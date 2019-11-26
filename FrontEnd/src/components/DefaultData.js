@@ -1,26 +1,14 @@
-export const defaultData = [{
-    name: '时间',
-    itemStyle: {
-        color: 'rgb(123,104,238)'
-    },
-    symbolSize: 30
-},{
-    name: '地点',
-    itemStyle: {
-        color: 'rgb(65,105,225)'
-    },
-    symbolSize: 30
-},{
-    name: '景物',
-    itemStyle: {
-        color: 'rgb(34,139,34)'
-    },
-    symbolSize: 30
-},{
-    name: '人',
-    itemStyle: {
-        color: 'rgb(255,69,0)'
-    },
-    symbolSize: 30
-}
+export const defaultData = [
+{fixed: true, name: "送别", itemStyle: {color: "rgb(123,104,238)"}, x: 379, y: 270,symbolSize: 50},
+{name: "离别", itemStyle: {color: "rgb(65,105,225)"}, symbolSize: 32},
+{name: "别离", itemStyle: {color: "rgb(255,69,0)"}, symbolSize: 25},
+{name: "送行", itemStyle: {color: "rgb(255,69,0)"}, symbolSize: 25},
+{name: "告别", itemStyle: {color: "rgb(255,69,0)"}, symbolSize: 25},
+{name: "饯别", itemStyle: {color: "rgb(255,69,0)"}, symbolSize: 25},
+{name: "相送", itemStyle: {color: "rgb(65,105,225)"}, symbolSize: 32},
+{name: "青门", itemStyle: {color: "rgb(65,105,225)"}, symbolSize: 32},
+{name: "退隐", itemStyle: {color: "rgb(255,69,0)"}, symbolSize: 25},
+{name: "送客", itemStyle: {color: "rgb(65,105,225)"}, symbolSize: 32},
+{name: "南浦", itemStyle: {color: "rgb(65,105,225)"}, symbolSize: 32},
+{name: "东门", itemStyle: {color: "rgb(65,105,225)"}, symbolSize: 32},
 ];

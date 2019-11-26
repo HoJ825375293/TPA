@@ -58,10 +58,10 @@ class EchartsAtlas extends Component {
                 force: {
                     // initLayout: 'circular'
                     // gravity: 0
-                    repulsion: 100,
-                    edgeLength: 30
+                    repulsion: 200,
+                    edgeLength: 50
                 },
-                edges: edges
+                edges: defaultEdge
                 }]
         })
     };
@@ -113,66 +113,94 @@ class EchartsAtlas extends Component {
     }
 
     handleIn(){
-        //set default
         tempData = [];
-        console.log("data")
-        console.log(data)
         if(this.state.selc === "1"){
+            data = [];
+            edges = [];
             let tempName = "";
             const nodeName = this.state.from;
             if(nodeName === ""){
                 message.error('要有输入才合法哦!');
             }else{
-                let i;
+                let i,j,k;
                 let len = GmlEdge.length;
-                let j;
+                let ci,cj;
                 tempName = nodeName;
 
+                data.push({
+                    name: nodeName,
+                    itemStyle: {
+                        color: 'rgb(123,104,238)'
+                    },
+                    x: myChart.getWidth()/2,
+                    y: myChart.getHeight()/2,
+                    symbolSize: 50,
+                })
+                ci = 0;
                 for(i = 0; i < len; i++){
+                    if(ci > 5){
+                        break;
+                    }
                     if(GmlEdge[i].source === nodeName){
-                        for(j = 0; j < len; j++){
-                            if(GmlEdge[j].source === )
+                        tempName = GmlEdge[i].target;
+                        for(k = 0; k < data.length; k++){
+                            if(data[k].name === tempName){
+                                break;
+                            }    
                         }
-
+                        if(k === data.length){
+                            ci++;
+                            tempData.push(GmlEdge[i])
+                            data.push({
+                                name: tempName,
+                                itemStyle: {
+                                    color: 'rgb(65,105,225)'
+                                },
+                                symbolSize: 32,
+                            });
+                            cj = 0;
+                            for(j = 0; j < len; j++){
+                                if(cj > 3){
+                                    break;
+                                }
+                                if(GmlEdge[j].source === tempName){
+                                    for(k = 0; k < data.length; k++){
+                                        if(data[k].name === GmlEdge[j].target){
+                                            break;
+                                        }    
+                                    }
+                                    if(k === data.length){
+                                        cj++;
+                                        tempData.push(GmlEdge[j]);
+                                        data.push({
+                                            name: GmlEdge[j].target,
+                                            itemStyle: {
+                                                color: 'rgb(255,69,0)'
+                                            },
+                                            symbolSize: 25,
+                                        })
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
 
-                // len = tempData.length-1;
-                // let cor;
+                for(i = 0; i < tempData.length; i++){
+                    for(j = 0; j < edges.length; j++){
+                        if(edges[j].source === tempData[i].source
+                        && edges[j].target === tempData[i].target){
+                            break;
+                        }
+                    }
+                    if(j === edges.length){
+                        edges.push(tempData[i])
+                    }
+                }
 
-                // for(i = 0; i < tempData.length; i++){
-                //     for(j = 0; j < data.length; j++){
-                //         if(tempData[i].source === data[j].name){
-                //             break;
-                //         }
-                //     }
-                //     if(j === data.length){
-                //         data.push({
-                //             name:tempData[i].source,
-                //             itemStyle: {
-                //                 color: cor
-                //             },
-                //             symbolSize: 20,
-                //         })
-                //     }
-                //     for(j = 0; j < data.length; j++){
-                //         if(tempData[i].target === data[j].name){
-                //             break;
-                //         }
-                //     }
-                //     if(j === data.length){
-                //         data.push({
-                //             name:tempData[i].target,
-                //             itemStyle: {
-                //                 color: cor
-                //             },
-                //             symbolSize: 20,
-                //         })
-                //     }
-                // }
-                // for(i = 0; i < tempData.length; i++){
-                //     edges.push(tempData[i])
-                // }
+                // console.log("----------")
+                // console.log(data)
+                // console.log(edges)
 
                 myChart.setOption({
                     series: [{
@@ -180,39 +208,45 @@ class EchartsAtlas extends Component {
                         edges: edges
                     }]
                 })
-
-                console.log("----------")
-                console.log(data)
-                console.log(edges)
             }
         }else if(this.state.selc === "2"){
-            let temp = [];
             const nodeName = this.state.from;
             const nodeName2 = this.state.to;
             if(nodeName === "" || nodeName2 === ""){
                 message.error('要有两个输入才合法哦!');
             }else{
+                data = [];
+                edges = [];
                 let i,j;
                 this.check(nodeName,nodeName2);
 
+                data.push({
+                    name:nodeName,
+                    itemStyle: {
+                        color: 'rgb(123,104,238)'
+                    },
+                    x:100,
+                    y:200,
+                    symbolSize: 55,
+                })
+                data.push({
+                    name:nodeName2,
+                    itemStyle: {
+                        color: 'rgb(65,105,225)'
+                    },
+                    x:500,
+                    y:200,
+                    symbolSize: 55,
+                })
+
                 let cor = 'red'
                 for(i = 0; i < tempData.length; i++){
-                    if(data !== undefined && data.hasOwnProperty('length')){
-                        for(j = 0; j < data.length; j++){
-                            if(tempData[i].source === data[j].name){
-                                break;
-                            }
+                    for(j = 0; j < data.length; j++){
+                        if(tempData[i].source === data[j].name){
+                            break;
                         }
-                        if(j === data.length){
-                            data.push({
-                                name:tempData[i].source,
-                                itemStyle: {
-                                    color: cor
-                                },
-                                symbolSize: 20,
-                            })
-                        }
-                    }else{
+                    }
+                    if(j === data.length){
                         data.push({
                             name:tempData[i].source,
                             itemStyle: {
@@ -222,22 +256,12 @@ class EchartsAtlas extends Component {
                         })
                     }
                     
-                    if(data !== undefined && data.hasOwnProperty('length')){
-                        for(j = 0; j < data.length; j++){
-                            if(tempData[i].target === data[j].name){
-                                break;
-                            }
+                    for(j = 0; j < data.length; j++){
+                        if(tempData[i].target === data[j].name){
+                            break;
                         }
-                        if(j === data.length){
-                            data.push({
-                                name:tempData[i].target,
-                                itemStyle: {
-                                    color: cor
-                                },
-                                symbolSize: 20,
-                            })
-                        }
-                    }else{
+                    }
+                    if(j === data.length){
                         data.push({
                             name:tempData[i].target,
                             itemStyle: {
