@@ -302,6 +302,22 @@ class EchartsAtlas extends Component {
         this.setState({selc:value});
     }
 
+    onChange(value) {
+        console.log(`selected ${value}`);
+    }
+      
+     onBlur() {
+        console.log('blur');
+    }
+      
+    onFocus() {
+        console.log('focus');
+    }
+      
+    onSearch(val) {
+        console.log('search:', val);
+    }
+
     SearchBar=()=>{
         const modeType = this.state.selc;
         if(modeType === "1"){
@@ -320,6 +336,24 @@ class EchartsAtlas extends Component {
                         onChange={event => this.handleFrom(event)}
                         allowClear = {true}
                         />
+                        <Select
+                        showSearch
+                        style={{ width: 200, textAlign: 'center' }}
+                        allowClear = {true}
+                        placeholder="Select a person"
+                        optionFilterProp="children"
+                        onChange={this.onChange}
+                        onFocus={this.onFocus}
+                        onBlur={this.onBlur}
+                        onSearch={this.onSearch}
+                        filterOption={(input, option) =>
+                        option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                        }
+                        >
+                            <Option value="送别">送别</Option>
+                            <Option value="李清照">李清照</Option>
+                            <Option value="春">春</Option>
+                        </Select>
                         </Tooltip>
                         <Button type="primary" onClick={()=>{this.handleIn()}}>搜索</Button>
                     </InputGroup>
