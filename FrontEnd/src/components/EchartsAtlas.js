@@ -1,11 +1,19 @@
 import React, { Component,Fragment } from 'react';
-import { Button,Input, Tooltip, Select } from 'antd';
+import { Button,Input, Tooltip, Select, message, Icon } from 'antd';
 import { GmlData } from './GmlData';
+import { GmlEdge } from './Edge';
+import { defaultData } from './DefaultData';
 
 var echarts = require('echarts');
 const InputGroup = Input.Group;
 const { Option } = Select;
-
+const corList = [{att:"时间",cor:'rgb(123,104,238)'},{att:"地点",cor:'rgb(65,105,225)'},
+                {att:"景物",cor:'rgb(34,139,34)'},{att:"人",cor:'rgb(255,69,0)'}]
+var data;
+var edges = [];
+var myChart;
+var tempData = [];
+var map = [];
 class EchartsAtlas extends Component {
     constructor(props){
         super(props)
@@ -28,51 +36,7 @@ class EchartsAtlas extends Component {
     // }
 
     componentDidMount(){
-        const me = this;
-        var myChart = echarts.init(document.getElementById("Atlas"));
-        var data = [{
-            fixed: true,
-            name: '时间',
-            itemStyle: {
-                color: 'rgb(123,104,238)'
-            },
-            x: myChart.getWidth() / 8,
-            y: myChart.getHeight() / 6,
-            symbolSize: 30,
-            id: 0
-        },{
-            fixed: true,
-            name: '地点',
-            itemStyle: {
-                color: 'rgb(65,105,225)'
-            },
-            x: myChart.getWidth()*3 / 8,
-            y: myChart.getHeight() / 6,
-            symbolSize: 30,
-            id: 1627
-        },{
-            fixed: true,
-            name: '景物',
-            itemStyle: {
-                color: 'rgb(34,139,34)'
-            },
-            x: myChart.getWidth()*5 / 8,
-            y: myChart.getHeight() / 6,
-            symbolSize: 30,
-            id: 357
-        },{
-            fixed: true,
-            name: '人',
-            itemStyle: {
-                color: 'rgb(255,69,0)'
-            },
-            x: myChart.getWidth()*7 / 8,
-            y: myChart.getHeight() / 6,
-            symbolSize: 30,
-            id: 2700
-        }
-        ];
-        var edges = [];
+        myChart = echarts.init(document.getElementById("Atlas"));
         
         myChart.setOption({
             series: [{
@@ -81,6 +45,7 @@ class EchartsAtlas extends Component {
                 layout: 'force',
                 animation: false,
                 focusNodeAdjacency:true,
+                edgeSymbol: ['arrow'],
                 itemStyle: {
                     normal: {
                         borderColor: '#fff',
@@ -97,12 +62,12 @@ class EchartsAtlas extends Component {
                 lineStyle: {
                     color: 'source',
                 },
-                data: data,
+                data: defaultData,
                 force: {
                     // initLayout: 'circular'
                     // gravity: 0
                     repulsion: 50,
-                    edgeLength: 5
+                    edgeLength: 30
                 },
                 edges: edges
                 }]
@@ -153,13 +118,184 @@ class EchartsAtlas extends Component {
         }
     }
 
-    handleIn(){
-        if(this.state.selc === "1"){
-
-        }else if(this.state.selc === "2"){
-
+    check(node1,node2){
+        console.log("check_initial")
+        console.log(node1)
+        console.log(node2)
+        if(node1 === node2){
+            return true;
         }
-        console.log(this.state)
+        let i,have;
+        while(1){
+            have = 0;
+            for(i = 0; i < GmlEdge.length; i++){
+                if(map[i] !== 1 && GmlEdge[i].source === node1){
+                    have = 1;
+                    map[i] = 1;
+                    if(this.check(GmlEdge[i].target,node2)){
+                        tempData.push(GmlEdge[i]);
+                        return true;
+                    }
+                }
+                if(map[i] !== 1 && GmlEdge[i].target === node1){
+                    have = 1;
+                    map[i] = 1;
+                    if(this.check(GmlEdge[i].source,node2)){
+                        tempData.push(GmlEdge[i]);
+                        return true;
+                    }
+                }
+            }
+            if(!have){
+                break;
+            };
+        }
+        return false
+    }
+
+    handleIn(){
+        //set default
+        tempData = [];
+        if(this.state.selc === "1"){
+            let tempName = "";
+            const nodeName = this.state.from;
+            if(nodeName === ""){
+                message.error('要有输入才合法哦!');
+            }else{
+                let i;
+                let len = GmlEdge.length;
+                let j;
+                tempName = nodeName;
+
+                len = tempData.length-1;
+                let cor;
+                if(tempData[len].source === "人" || tempData[len].source === "景物" ||
+                tempData[len].source === "时间" || tempData[len].source === "地点"){
+                    for(i = 0; i < corList.length; i++){
+                        if(corList[i].att === tempData[len].source){
+                            cor = corList[i].cor;
+                            break
+                        }
+                    }
+                }else{
+                    for(i = 0; i < corList.length; i++){
+                        if(corList[i].att === tempData[0].source){
+                            cor = corList[i].cor;
+                            break
+                        }
+                    }
+                }
+
+                for(i = 0; i < tempData.length; i++){
+                    for(j = 0; j < data.length; j++){
+                        if(tempData[i].source === data[j].name){
+                            break;
+                        }
+                    }
+                    if(j === data.length){
+                        data.push({
+                            name:tempData[i].source,
+                            itemStyle: {
+                                color: cor
+                            },
+                            symbolSize: 20,
+                        })
+                    }
+                    for(j = 0; j < data.length; j++){
+                        if(tempData[i].target === data[j].name){
+                            break;
+                        }
+                    }
+                    if(j === data.length){
+                        data.push({
+                            name:tempData[i].target,
+                            itemStyle: {
+                                color: cor
+                            },
+                            symbolSize: 20,
+                        })
+                    }
+                }
+                for(i = 0; i < tempData.length; i++){
+                    edges.push(tempData[i])
+                }
+
+                myChart.setOption({
+                    series: [{
+                        data: data,
+                        edges: edges
+                    }]
+                })
+
+                console.log("----------")
+                console.log(data)
+                console.log(edges)
+            }
+        }else if(this.state.selc === "2"){
+            let temp = [];
+            const nodeName = this.state.from;
+            const nodeName2 = this.state.to;
+            if(nodeName === "" || nodeName2 === ""){
+                message.error('要有两个输入才合法哦!');
+            }else{
+                let i,j;
+                this.check(nodeName,nodeName2);
+
+                let cor = 'red'
+                for(i = 0; i < tempData.length; i++){
+                    for(j = 0; j < data.length; j++){
+                        if(tempData[i].source === data[j].name){
+                            break;
+                        }
+                    }
+                    if(j === data.length){
+                        data.push({
+                            name:tempData[i].source,
+                            itemStyle: {
+                                color: cor
+                            },
+                            symbolSize: 20,
+                        })
+                    }
+                    for(j = 0; j < data.length; j++){
+                        if(tempData[i].target === data[j].name){
+                            break;
+                        }
+                    }
+                    if(j === data.length){
+                        data.push({
+                            name:tempData[i].target,
+                            itemStyle: {
+                                color: cor
+                            },
+                            symbolSize: 20,
+                        })
+                    }
+                }
+                for(i = 0; i < tempData.length; i++){
+                    for(j = 0; j < edges.length; j++){
+                        if(edges[j].source === tempData[i].source
+                        && edges[j].target === tempData[i].target){
+                            break;
+                        }
+                    }
+                    if(j === edges.length){
+                        edges.push(tempData[i])
+                    }
+                }
+
+                myChart.setOption({
+                    series: [{
+                        data: data,
+                        edges: edges
+                    }]
+                })
+                console.log(data)
+                console.log(edges)
+                console.log(tempData)
+            }
+        }
+        // console.log(this.state)
     }
 
     handleSelect(value){
