@@ -20,6 +20,7 @@ class EchartsAtlas extends Component {
     constructor(props){
         super(props)
         this.state={
+            from:"",
             to:"",
             selc:"1"
         }
@@ -64,12 +65,12 @@ class EchartsAtlas extends Component {
         })
     };
 
-    // handleFrom(event){
-    //     if(event && event.target && event.target.value){
-    //         let value = event.target.value;
-    //         this.setState({from:value })
-    //     }
-    // }
+    handleFrom(event){
+        if(event && event.target && event.target.value){
+            let value = event.target.value;
+            this.setState({from:value })
+        }
+    }
 
     handleTo(event){
         if(event && event.target && event.target.value){
@@ -116,7 +117,7 @@ class EchartsAtlas extends Component {
             data = [];
             edges = [];
             let tempName = "";
-            const nodeName = this.state.from;
+            const nodeName = from;
             if(nodeName === "" || nodeName === undefined){
                 message.error('要有输入才合法哦!');
             }else{
@@ -303,12 +304,10 @@ class EchartsAtlas extends Component {
 
     onChange(value) {
         from = value
-        console.log(from)
     }
       
     onSearch(val) {
         from = val
-        console.log(from)
     }
 
     SearchBar=()=>{
@@ -333,9 +332,12 @@ class EchartsAtlas extends Component {
                         onSearch={this.onSearch}
                         notFoundContent={null}
                         >
+                            <Option value="时间">时间</Option>
                             <Option value="送别">送别</Option>
-                            <Option value="李清照">李清照</Option>
-                            <Option value="春">春</Option>
+                            <Option value="汉朝">汉朝</Option>
+                            <Option value="水">水</Option>
+                            <Option value="酒">酒</Option>
+                            <Option value="王昭君">王昭君</Option>
                         </Select>
                         </Tooltip>
                         <Button type="primary" onClick={()=>{this.handleIn()}}>搜索</Button>
