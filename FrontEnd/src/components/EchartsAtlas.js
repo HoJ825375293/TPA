@@ -1,15 +1,16 @@
 import React, { Component,Fragment } from 'react';
-import { Button,Input, Tooltip, Select, message, Icon } from 'antd';
+import { Button,Input, Tooltip, Select, message, Row, Col } from 'antd';
 import { GmlData } from './GmlData';
 import { GmlEdge } from './Edge';
 import { defaultData } from './DefaultData';
+import { defaultEdge } from './DefaultEdge';
 
 var echarts = require('echarts');
 const InputGroup = Input.Group;
 const { Option } = Select;
 const corList = [{att:"时间",cor:'rgb(123,104,238)'},{att:"地点",cor:'rgb(65,105,225)'},
                 {att:"景物",cor:'rgb(34,139,34)'},{att:"人",cor:'rgb(255,69,0)'}]
-var data;
+var data = [];
 var edges = [];
 var myChart;
 var tempData = [];
@@ -24,17 +25,8 @@ class EchartsAtlas extends Component {
             to:"",
             selc:"1"
         }
-        // this.timer = null;
-        // this.Stop = this.Stop.bind(this);
     }
     
-    // Stop(){
-    //     if(this.timer){
-    //         clearInterval(this.timer);
-    //         this.timer = null;
-    //     }
-    // }
-
     componentDidMount(){
         myChart = echarts.init(document.getElementById("Atlas"));
         
@@ -66,42 +58,12 @@ class EchartsAtlas extends Component {
                 force: {
                     // initLayout: 'circular'
                     // gravity: 0
-                    repulsion: 50,
+                    repulsion: 100,
                     edgeLength: 30
                 },
                 edges: edges
                 }]
         })
-
-        // this.timer = setInterval(function(){
-        //     me.setState({
-        //         timer:me.state.timer + 1
-        //     })
-        //     if(me.state.timer == me.state.max){
-        //         me.Stop();
-        //     }
-            
-        //     data.push({
-        //         id: data.length
-        //     });
-        //     var source = Math.round((data.length - 1) * Math.random());
-        //     var target = Math.round((data.length - 1) * Math.random());
-        //     if (source !== target) {
-        //         edges.push({
-        //             source: source,
-        //             target: target
-        //         });
-
-        //         // myChart.setOption({
-        //         //     series: [{
-        //         //         data: data,
-        //         //         edges: edges
-        //         //     }]
-        //         // })
-        //     } 
-        // },100)
-
-        
     };
 
     handleFrom(event){
@@ -119,9 +81,6 @@ class EchartsAtlas extends Component {
     }
 
     check(node1,node2){
-        console.log("check_initial")
-        console.log(node1)
-        console.log(node2)
         if(node1 === node2){
             return true;
         }
@@ -156,6 +115,8 @@ class EchartsAtlas extends Component {
     handleIn(){
         //set default
         tempData = [];
+        console.log("data")
+        console.log(data)
         if(this.state.selc === "1"){
             let tempName = "";
             const nodeName = this.state.from;
@@ -167,58 +128,51 @@ class EchartsAtlas extends Component {
                 let j;
                 tempName = nodeName;
 
-                len = tempData.length-1;
-                let cor;
-                if(tempData[len].source === "人" || tempData[len].source === "景物" ||
-                tempData[len].source === "时间" || tempData[len].source === "地点"){
-                    for(i = 0; i < corList.length; i++){
-                        if(corList[i].att === tempData[len].source){
-                            cor = corList[i].cor;
-                            break
+                for(i = 0; i < len; i++){
+                    if(GmlEdge[i].source === nodeName){
+                        for(j = 0; j < len; j++){
+                            if(GmlEdge[j].source === )
                         }
-                    }
-                }else{
-                    for(i = 0; i < corList.length; i++){
-                        if(corList[i].att === tempData[0].source){
-                            cor = corList[i].cor;
-                            break
-                        }
+
                     }
                 }
 
-                for(i = 0; i < tempData.length; i++){
-                    for(j = 0; j < data.length; j++){
-                        if(tempData[i].source === data[j].name){
-                            break;
-                        }
-                    }
-                    if(j === data.length){
-                        data.push({
-                            name:tempData[i].source,
-                            itemStyle: {
-                                color: cor
-                            },
-                            symbolSize: 20,
-                        })
-                    }
-                    for(j = 0; j < data.length; j++){
-                        if(tempData[i].target === data[j].name){
-                            break;
-                        }
-                    }
-                    if(j === data.length){
-                        data.push({
-                            name:tempData[i].target,
-                            itemStyle: {
-                                color: cor
-                            },
-                            symbolSize: 20,
-                        })
-                    }
-                }
-                for(i = 0; i < tempData.length; i++){
-                    edges.push(tempData[i])
-                }
+                // len = tempData.length-1;
+                // let cor;
+
+                // for(i = 0; i < tempData.length; i++){
+                //     for(j = 0; j < data.length; j++){
+                //         if(tempData[i].source === data[j].name){
+                //             break;
+                //         }
+                //     }
+                //     if(j === data.length){
+                //         data.push({
+                //             name:tempData[i].source,
+                //             itemStyle: {
+                //                 color: cor
+                //             },
+                //             symbolSize: 20,
+                //         })
+                //     }
+                //     for(j = 0; j < data.length; j++){
+                //         if(tempData[i].target === data[j].name){
+                //             break;
+                //         }
+                //     }
+                //     if(j === data.length){
+                //         data.push({
+                //             name:tempData[i].target,
+                //             itemStyle: {
+                //                 color: cor
+                //             },
+                //             symbolSize: 20,
+                //         })
+                //     }
+                // }
+                // for(i = 0; i < tempData.length; i++){
+                //     edges.push(tempData[i])
+                // }
 
                 myChart.setOption({
                     series: [{
@@ -243,12 +197,22 @@ class EchartsAtlas extends Component {
 
                 let cor = 'red'
                 for(i = 0; i < tempData.length; i++){
-                    for(j = 0; j < data.length; j++){
-                        if(tempData[i].source === data[j].name){
-                            break;
+                    if(data !== undefined && data.hasOwnProperty('length')){
+                        for(j = 0; j < data.length; j++){
+                            if(tempData[i].source === data[j].name){
+                                break;
+                            }
                         }
-                    }
-                    if(j === data.length){
+                        if(j === data.length){
+                            data.push({
+                                name:tempData[i].source,
+                                itemStyle: {
+                                    color: cor
+                                },
+                                symbolSize: 20,
+                            })
+                        }
+                    }else{
                         data.push({
                             name:tempData[i].source,
                             itemStyle: {
@@ -257,12 +221,23 @@ class EchartsAtlas extends Component {
                             symbolSize: 20,
                         })
                     }
-                    for(j = 0; j < data.length; j++){
-                        if(tempData[i].target === data[j].name){
-                            break;
+                    
+                    if(data !== undefined && data.hasOwnProperty('length')){
+                        for(j = 0; j < data.length; j++){
+                            if(tempData[i].target === data[j].name){
+                                break;
+                            }
                         }
-                    }
-                    if(j === data.length){
+                        if(j === data.length){
+                            data.push({
+                                name:tempData[i].target,
+                                itemStyle: {
+                                    color: cor
+                                },
+                                symbolSize: 20,
+                            })
+                        }
+                    }else{
                         data.push({
                             name:tempData[i].target,
                             itemStyle: {
@@ -272,6 +247,7 @@ class EchartsAtlas extends Component {
                         })
                     }
                 }
+                
                 for(i = 0; i < tempData.length; i++){
                     for(j = 0; j < edges.length; j++){
                         if(edges[j].source === tempData[i].source
@@ -301,10 +277,6 @@ class EchartsAtlas extends Component {
     handleSelect(value){
         this.setState({selc:value});
     }
-
-    // componentWillUnmount() {
-    //     clearInterval(this.timer);
-    // }
 
     SearchBar=()=>{
         const modeType = this.state.selc;
@@ -377,9 +349,10 @@ class EchartsAtlas extends Component {
             <div style={{width:'100%'}}>
                 <Fragment>
                     {this.SearchBar()}  
-                </Fragment>        
+                </Fragment>
+                <Row style={{ height:10 }}></Row>        
             </div>    
-            <div id = "Atlas" style = {{width:'100%', height:550}}> </div>
+            <div id = "Atlas" style = {{width:'100%', height:540}}> </div>
             </div>
         );
     }

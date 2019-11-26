@@ -40,12 +40,12 @@ class HomePage extends React.Component {
             <AccountBar path='/'/>
           </Col>
         </Row> */}
-        <Row style={{ height:15 }}></Row>
+        {/* <Row style={{ height:15 }}></Row> */}
         
         <Row>
           <Col span={1}/>
           <Col span={22} >
-              <Row style={{ height:5 }}></Row>
+              <Row style={{ height:10 }}></Row>
               <Card
                 style={{ width: '100%'}}
                 title="唐诗图谱demo"
