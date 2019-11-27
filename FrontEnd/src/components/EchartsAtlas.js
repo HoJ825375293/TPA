@@ -483,8 +483,8 @@ class EchartsAtlas extends Component {
 
     render(){
         return (
-            <div>
-            <div style={{width:'100%'}}>
+            <div style={{backgroundColor:'#F7EED6'}}>
+            <div style={{width:'100%',backgroundColor:'#F7EED6'}}>
                 <Fragment>
                     <div data-step="3" data-intro="这里是主要输入框" data-position="right">
                     {this.SearchBar()}  
@@ -493,7 +493,7 @@ class EchartsAtlas extends Component {
                 <Row style={{ height:10 }}></Row>        
             </div>    
             <div id = "Atlas" data-step="4" data-intro="我们已经为你展示出一个实例结果,开始自己的探索吧!" data-position="right" 
-            style = {{width:'100%', height:540}}> </div>
+            style = {{width:'100%', backgroundColor:'#FFFAFA',height:540}}> </div>
             </div>
         );
     }

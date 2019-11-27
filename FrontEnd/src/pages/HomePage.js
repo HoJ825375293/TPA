@@ -1,6 +1,7 @@
 import React from 'react';
 import { Row, Col, Card } from 'antd';
 import EchartsAtlas from '../components/EchartsAtlas';
+import background from './BGP.jpg'
 // import Compre from '../components/Compre';
 // import AccountBar from '../components/AccounBar';
 // import store from '../store'
@@ -17,7 +18,7 @@ const tabList = [
 ];
 
 const contentList = {
-  图谱: <EchartsAtlas path='/'></EchartsAtlas>,
+  图谱: <EchartsAtlas></EchartsAtlas>,
   统计: <div>NOT YET</div>
 };
 
@@ -33,7 +34,8 @@ class HomePage extends React.Component {
 
   render() {
     return (  
-      <div>
+      <div style={{height:1000, width: '100%',
+        backgroundImage: `url(${background})`,backgroundSize: 'cover'}}>
         {/* <Row style={{ height:50 }}>
           <Col span={19}/>
           <Col span={5} style={{paddingLeft:50, paddingTop:20}}>
@@ -41,7 +43,7 @@ class HomePage extends React.Component {
           </Col>
         </Row> */}
         {/* <Row style={{ height:15 }}></Row> */}
-        
+        <div>
         <Row>
           <Col span={1}/>
           <Col span={22} >
@@ -50,7 +52,8 @@ class HomePage extends React.Component {
                 style={{ width: '100%'}}
                 title="古诗词图谱"
                 tabList={tabList}
-                headStyle = {{fontSize:'25px'}}
+                headStyle = {{fontSize:'25px',backgroundColor:'#F7EED6'}}
+                bodyStyle = {{backgroundColor:'#F7EED6'}}
                 activeTabKey={this.state.Key}
                 onTabChange={key => {
                   this.onTabChange(key);
@@ -61,7 +64,7 @@ class HomePage extends React.Component {
           </Col>
           <Col span={1}/>
         </Row>
-        
+        </div>
       </div>
     );
   }
