@@ -68,39 +68,44 @@ class EchartsAtlas extends Component {
         })
     };
 
-    Intro1 = () => {
-        IntroJs().setOptions({
-            prevLabel: "上一步",
-            nextLabel: "下一步",
-            skipLabel: "跳过",
-            doneLabel: "结束",
-            showProgress:false,
-            exitOnEsc:true,
-            showButtons:true,
-            showStepNumbers:true,
-            keyboardNavigation:true,
-            overlayOpacity: 0,
-            showBullets:false,
-        }).goToStepNumber(1).start();
-    }
+    Intro = (key) => {
+		notification.close(key)
+		IntroJs().setOptions({
+			prevLabel: "上一步",
+			nextLabel: "下一步",
+			skipLabel: "跳过",
+			doneLabel: "结束",
+			showProgress: true,
+			exitOnEsc: true,
+			showButtons: true,
+			showStepNumbers: true,
+			keyboardNavigation: true,
+			showBullets: false,
+		}).oncomplete(function () {
+			message.success('开始你的关系找寻之旅吧！')
+		}).onexit(function () {
+		}).start();
+	}
 
     openNotification = () => {
-        const close = () => {};
         const key = `open${Date.now()}`;
         const btn = (
-          <Button type="primary" onClick={() => notification.close(key)}>
-            需要
-          </Button>
+            <div>
+                <Button type="primary" onClick={() => this.Intro(key)} style={{ marginRight: '30px' }}>
+                    需要
+                </Button>
+            </div>
         );
         notification.open({
-          message: '需要帮助吗?',
-          description:
-            '请点击\'需要\'按钮来获取帮助',
-          icon: <Icon type="smile" style={{ color: '#FFC125' }} />,
-          duration: 3.5,
-          btn,
-          key,
-          onClose: close,
+            message: '是否需要帮助？',
+            description: '点击下方的"需要"按钮，可以帮助您进行简单的引导。',
+            style: {
+                width: 400,
+            },
+            duration: 3.5,
+            icon: <Icon type="smile" style={{ color: '#FFC125' }} />,
+            btn,
+            key
         });
     };
     
@@ -384,12 +389,15 @@ class EchartsAtlas extends Component {
             return (
                 <Fragment>
                     <InputGroup compact onSearch={value => console.log(value)}>
+                        <div data-step="1" data-intro="在这里选择输入的模式:“属性图”用于搜索单属性范围关系；“关系图”用于搜索两属性之间的路径关系" data-position="right">
                         <Select defaultValue="1" onChange={(value)=>this.handleSelect(value)}>
                         <Option value="1">属性图</Option>
                         <Option value="2">关系图</Option>
                         </Select>
+                        </div>
                     
                         <Tooltip title="属性可以是任何时间,地点,景物,人">
+                        <div data-step="2" data-intro="点击输入框,获取一些例子,或者自定义输入" data-position="right">
                         <Dropdown overlay={menu} trigger={['click']}>
                             <Input
                             style={{ width: 180, textAlign: 'center' }}
@@ -399,6 +407,7 @@ class EchartsAtlas extends Component {
                             allowClear = {true}
                             />
                         </Dropdown>
+                        </div>
                         </Tooltip>
                         <Button type="primary" onClick={()=>{this.handleIn()}}>搜索</Button>
                     </InputGroup>
@@ -409,18 +418,21 @@ class EchartsAtlas extends Component {
             return (
                 <Fragment>
                     <InputGroup compact onSearch={value => console.log(value)}>
+                        
                         <Select defaultValue="2" onChange={(value)=>this.handleSelect(value)}>
                         <Option value="1">属性图</Option>
                         <Option value="2">关系图</Option>
                         </Select>
-                    
+                        
                         <Tooltip title="属性可以是任何时间,地点,景物,人">
+                        
                         <Input
                         style={{ width: 180, textAlign: 'center' }}
                         placeholder="请输入查询属性"
                         onChange={event => this.handleFrom(event)}
                         allowClear = {true}
                         />
+                        
                         </Tooltip>
                         <Input
                             style={{
@@ -449,14 +461,15 @@ class EchartsAtlas extends Component {
     render(){
         return (
             <div>
-            <div style={{width:'100%'}}
-            data-step="1" data-intro="在这里选择输入模式" data-position="right" >
+            <div style={{width:'100%'}}>
                 <Fragment>
+                    <div data-step="3" data-intro="这里是主要输入框" data-position="right">
                     {this.SearchBar()}  
+                    </div>
                 </Fragment>
                 <Row style={{ height:10 }}></Row>        
             </div>    
-            <div id = "Atlas" data-step="2" data-intro="这里看结果" data-position="right" 
+            <div id = "Atlas" data-step="4" data-intro="我们已经为你展示出一个实例结果,开始自己的探索吧!" data-position="right" 
             style = {{width:'100%', height:540}}> </div>
             </div>
         );
