@@ -4,9 +4,10 @@ import { Button,Input, Tooltip, Select, message, Row, Menu, Dropdown, Icon,notif
 import { GmlEdge } from './Edge';
 import { defaultData } from './DefaultData';
 import { defaultEdge } from './DefaultEdge';
-import introJs from 'intro.js';
 import { Steps, Hints } from 'intro.js-react';
 import 'intro.js/introjs.css';
+
+var IntroJs = require('intro.js')
 
 var echarts = require('echarts');
 const InputGroup = Input.Group;
