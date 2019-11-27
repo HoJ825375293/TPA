@@ -48,8 +48,9 @@ class HomePage extends React.Component {
               <Row style={{ height:10 }}></Row>
               <Card
                 style={{ width: '100%'}}
-                title="唐诗图谱demo"
+                title="古诗词图谱"
                 tabList={tabList}
+                headStyle = {{fontSize:'25px'}}
                 activeTabKey={this.state.Key}
                 onTabChange={key => {
                   this.onTabChange(key);

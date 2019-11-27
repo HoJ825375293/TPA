@@ -1,5 +1,5 @@
 export const defaultData = [
-{fixed: true, name: "送别", itemStyle: {color: "rgb(123,104,238)"}, x: 379, y: 270,symbolSize: 50},
+{name: "送别", itemStyle: {color: "rgb(123,104,238)"}, symbolSize: 50},
 {name: "离别", itemStyle: {color: "rgb(65,105,225)"}, symbolSize: 32},
 {name: "别离", itemStyle: {color: "rgb(255,69,0)"}, symbolSize: 25},
 {name: "送行", itemStyle: {color: "rgb(255,69,0)"}, symbolSize: 25},

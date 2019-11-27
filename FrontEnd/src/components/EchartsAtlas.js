@@ -4,7 +4,7 @@ import { Button,Input, Tooltip, Select, message, Row, Menu, Dropdown, Icon,notif
 import { GmlEdge } from './Edge';
 import { defaultData } from './DefaultData';
 import { defaultEdge } from './DefaultEdge';
-import { Steps, Hints } from 'intro.js-react';
+// import { Steps, Hints } from 'intro.js-react';
 import 'intro.js/introjs.css';
 
 var IntroJs = require('intro.js')
@@ -40,6 +40,7 @@ class EchartsAtlas extends Component {
                 animation: false,
                 focusNodeAdjacency:true,
                 edgeSymbol: ['arrow'],
+                draggable:true,
                 itemStyle: {
                     normal: {
                         borderColor: '#fff',
@@ -129,7 +130,6 @@ class EchartsAtlas extends Component {
         let i,j,found;
 
         stack.push(node1);
-        
         found = 0;
         for(j = 0; j < stack.length; j++){
             for(i = 0; i < GmlEdge.length; i++){
@@ -279,85 +279,108 @@ class EchartsAtlas extends Component {
                 message.error('要有两个输入才合法哦!');
             }else if(nodeName === nodeName2){
                 message.error('两个属性名字应不同哦!');
-            }
-            else{
-                data = [];
-                edges = [];
+            }else{
                 let i,j;
-                map = [];
-                stack = [];
-                this.check(nodeName,nodeName2);
-
-                data.push({
-                    name:nodeName,
-                    itemStyle: {
-                        color: 'rgb(123,104,238)'
-                    },
-                    x:100,
-                    y:200,
-                    symbolSize: 55,
-                })
-                data.push({
-                    name:nodeName2,
-                    itemStyle: {
-                        color: 'rgb(65,105,225)'
-                    },
-                    x:500,
-                    y:200,
-                    symbolSize: 55,
-                })
-
-                let cor = 'red'
-                for(i = 0; i < tempData.length; i++){
-                    for(j = 0; j < data.length; j++){
-                        if(tempData[i].source === data[j].name){
-                            break;
-                        }
+                let have1 = 0, have2 = 0;
+                for(i = 0; i < GmlEdge.length; i++){
+                    if(have1 && have2){
+                        break;
                     }
-                    if(j === data.length){
-                        data.push({
-                            name:tempData[i].source,
-                            itemStyle: {
-                                color: cor
-                            },
-                            symbolSize: 30,
-                        })
+                    if(GmlEdge[i].source === nodeName
+                    || GmlEdge[i].target === nodeName){
+                        have1 = 1;
+                    }
+                    if(GmlEdge[i].source === nodeName2
+                    || GmlEdge[i].target === nodeName2){
+                        have2 = 1;
+                    }
+                }
+                if(have1 && have2){
+                    data = [];
+                    edges = [];
+                    map = [];
+                    stack = [];
+
+                    this.check(nodeName,nodeName2);
+
+                    data.push({
+                        name:nodeName,
+                        itemStyle: {
+                            color: 'rgb(123,104,238)'
+                        },
+                        x:100,
+                        y:200,
+                        symbolSize: 55,
+                    })
+                    data.push({
+                        name:nodeName2,
+                        itemStyle: {
+                            color: 'rgb(65,105,225)'
+                        },
+                        x:500,
+                        y:200,
+                        symbolSize: 55,
+                    })
+
+                    let cor = 'red'
+                    for(i = 0; i < tempData.length; i++){
+                        for(j = 0; j < data.length; j++){
+                            if(tempData[i].source === data[j].name){
+                                break;
+                            }
+                        }
+                        if(j === data.length){
+                            data.push({
+                                name:tempData[i].source,
+                                itemStyle: {
+                                    color: cor
+                                },
+                                symbolSize: 30,
+                            })
+                        }
+                        
+                        for(j = 0; j < data.length; j++){
+                            if(tempData[i].target === data[j].name){
+                                break;
+                            }
+                        }
+                        if(j === data.length){
+                            data.push({
+                                name:tempData[i].target,
+                                itemStyle: {
+                                    color: cor
+                                },
+                                symbolSize: 30,
+                            })
+                        }
                     }
                     
-                    for(j = 0; j < data.length; j++){
-                        if(tempData[i].target === data[j].name){
-                            break;
+                    for(i = 0; i < tempData.length; i++){
+                        for(j = 0; j < edges.length; j++){
+                            if(edges[j].source === tempData[i].source
+                            && edges[j].target === tempData[i].target){
+                                break;
+                            }
+                        }
+                        if(j === edges.length){
+                            edges.push(tempData[i])
                         }
                     }
-                    if(j === data.length){
-                        data.push({
-                            name:tempData[i].target,
-                            itemStyle: {
-                                color: cor
-                            },
-                            symbolSize: 30,
-                        })
-                    }
-                }
-                
-                for(i = 0; i < tempData.length; i++){
-                    for(j = 0; j < edges.length; j++){
-                        if(edges[j].source === tempData[i].source
-                        && edges[j].target === tempData[i].target){
-                            break;
-                        }
-                    }
-                    if(j === edges.length){
-                        edges.push(tempData[i])
-                    }
-                }
 
-                myChart.setOption({
-                    series: [{
-                        data: data,
-                        edges: edges
-                    }]
-                })
+                    myChart.setOption({
+                        series: [{
+                            data: data,
+                            edges: edges
+                        }]
+                    })
+                }else{
+                    if(!have1 && !have2)
+                        message.error("在数据库中找寻节点1与节点2失败,请输入有效节点")
+                    else if(!have1)
+                        message.error("在数据库中找寻节点1失败,请输入有效节点")
+                    else if(!have2)
+                        message.error("在数据库中找寻节点2失败,请输入有效节点")
+                }
             }
         }
     }
