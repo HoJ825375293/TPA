@@ -1,6 +1,6 @@
 import React, { Component,Fragment } from 'react';
-import { Button,Input, Tooltip, Select, message, Row, Col } from 'antd';
-import { GmlData } from './GmlData';
+import { Button,Input, Tooltip, Select, message, Row, Menu, Dropdown, notification} from 'antd';
+// import { GmlData } from './GmlData';
 import { GmlEdge } from './Edge';
 import { defaultData } from './DefaultData';
 import { defaultEdge } from './DefaultEdge';
@@ -8,21 +8,20 @@ import { defaultEdge } from './DefaultEdge';
 var echarts = require('echarts');
 const InputGroup = Input.Group;
 const { Option } = Select;
-const corList = [{att:"时间",cor:'rgb(123,104,238)'},{att:"地点",cor:'rgb(65,105,225)'},
-                {att:"景物",cor:'rgb(34,139,34)'},{att:"人",cor:'rgb(255,69,0)'}]
 var data = [];
 var edges = [];
 var myChart;
 var tempData = [];
 var map = [];
-var from;
+var stack = [];
+
 class EchartsAtlas extends Component {
     constructor(props){
         super(props)
         this.state={
             from:"",
             to:"",
-            selc:"1"
+            selc:"1",
         }
     }
     
@@ -57,8 +56,8 @@ class EchartsAtlas extends Component {
                 force: {
                     // initLayout: 'circular'
                     // gravity: 0
-                    repulsion: 200,
-                    edgeLength: 50
+                    repulsion: 500,
+                    edgeLength: 55
                 },
                 edges: defaultEdge
                 }]
@@ -80,35 +79,54 @@ class EchartsAtlas extends Component {
     }
 
     check(node1,node2){
-        if(node1 === node2){
-            return true;
-        }
-        let i,have;
-        while(1){
-            have = 0;
+        let temp = []
+        let tempName;
+        let i,j,found;
+
+        stack.push(node1);
+        
+        found = 0;
+        for(j = 0; j < stack.length; j++){
             for(i = 0; i < GmlEdge.length; i++){
-                if(map[i] !== 1 && GmlEdge[i].source === node1){
-                    have = 1;
+                if(map[i] !== 1 && GmlEdge[i].source === stack[j]){
                     map[i] = 1;
-                    if(this.check(GmlEdge[i].target,node2)){
-                        tempData.push(GmlEdge[i]);
-                        return true;
+                    stack.push(GmlEdge[i].target)
+                    temp.push(GmlEdge[i])
+                    if(GmlEdge[i].target === node2){
+                        found = 1;
+                        break;
                     }
                 }
-                if(map[i] !== 1 && GmlEdge[i].target === node1){
-                    have = 1;
+                if(map[i] !== 1 && GmlEdge[i].target === stack[j]){
                     map[i] = 1;
-                    if(this.check(GmlEdge[i].source,node2)){
-                        tempData.push(GmlEdge[i]);
-                        return true;
+                    stack.push(GmlEdge[i].source)
+                    temp.push(GmlEdge[i])
+                    if(GmlEdge[i].source === node2){
+                        found = 1;
+                        break;
                     }
                 }
             }
-            if(!have){
+            if(found){
                 break;
-            };
+            }
         }
-        return false
+
+        tempName = node2;
+        while(tempName !== node1){
+            for(i = 0; i < temp.length; i++){
+                if(temp[i].source === tempName){
+                    tempData.push(temp[i])
+                    tempName = temp[i].target
+                    break
+                }
+                if(temp[i].target === tempName){
+                    tempData.push(temp[i])
+                    tempName = temp[i].source
+                    break
+                }
+            }
+        }
     }
 
     handleIn(){
@@ -117,8 +135,8 @@ class EchartsAtlas extends Component {
             data = [];
             edges = [];
             let tempName = "";
-            const nodeName = from;
-            if(nodeName === "" || nodeName === undefined){
+            const nodeName = this.state.from;
+            if(nodeName === ""){
                 message.error('要有输入才合法哦!');
             }else{
                 let i,j,k;
@@ -133,7 +151,7 @@ class EchartsAtlas extends Component {
                     },
                     x: myChart.getWidth()/2,
                     y: myChart.getHeight()/2,
-                    symbolSize: 50,
+                    symbolSize: 55,
                 })
                 ci = 0;
                 for(i = 0; i < len; i++){
@@ -155,7 +173,7 @@ class EchartsAtlas extends Component {
                                 itemStyle: {
                                     color: 'rgb(65,105,225)'
                                 },
-                                symbolSize: 32,
+                                symbolSize: 37,
                             });
                             cj = 0;
                             for(j = 0; j < len; j++){
@@ -176,7 +194,7 @@ class EchartsAtlas extends Component {
                                             itemStyle: {
                                                 color: 'rgb(255,69,0)'
                                             },
-                                            symbolSize: 25,
+                                            symbolSize: 30,
                                         })
                                     }
                                 }
@@ -197,9 +215,9 @@ class EchartsAtlas extends Component {
                     }
                 }
 
-                // console.log("----------")
-                // console.log(data)
-                // console.log(edges)
+                if(!edges.hasOwnProperty('length')){
+                    message.error("找不到它的关系哦!")
+                }
 
                 myChart.setOption({
                     series: [{
@@ -214,10 +232,15 @@ class EchartsAtlas extends Component {
             if(nodeName === "" || nodeName2 === ""
             || nodeName === undefined || nodeName2 === undefined){
                 message.error('要有两个输入才合法哦!');
-            }else{
+            }else if(nodeName === nodeName2){
+                message.error('两个属性名字应不同哦!');
+            }
+            else{
                 data = [];
                 edges = [];
                 let i,j;
+                map = [];
+                stack = [];
                 this.check(nodeName,nodeName2);
 
                 data.push({
@@ -252,7 +275,7 @@ class EchartsAtlas extends Component {
                             itemStyle: {
                                 color: cor
                             },
-                            symbolSize: 20,
+                            symbolSize: 30,
                         })
                     }
                     
@@ -267,7 +290,7 @@ class EchartsAtlas extends Component {
                             itemStyle: {
                                 color: cor
                             },
-                            symbolSize: 20,
+                            symbolSize: 30,
                         })
                     }
                 }
@@ -290,28 +313,32 @@ class EchartsAtlas extends Component {
                         edges: edges
                     }]
                 })
-                console.log(data)
-                console.log(edges)
-                console.log(tempData)
             }
         }
-        // console.log(this.state)
     }
 
     handleSelect(value){
         this.setState({selc:value});
     }
 
-    onChange(value) {
-        from = value
-    }
-      
-    onSearch(val) {
-        from = val
+    OnMenu(key){
+        this.setState({
+            from:key.item.props.children
+        })
     }
 
     SearchBar=()=>{
         const modeType = this.state.selc;
+        const menu = (
+            <Menu onClick={(key)=>this.OnMenu(key)}>
+              <Menu.Item key="0">时间</Menu.Item>
+              <Menu.Item key="1">王昭君</Menu.Item>
+              <Menu.Item key="3">送别</Menu.Item>
+              <Menu.Item key="4">酒</Menu.Item>
+              <Menu.Divider />
+              <Menu.Item key="5">这里是一些例子</Menu.Item>
+            </Menu>
+        );
 
         if(modeType === "1"){
             return (
@@ -323,7 +350,7 @@ class EchartsAtlas extends Component {
                         </Select>
                     
                         <Tooltip title="属性可以是任何时间,地点,景物,人">
-                        <Select
+                        {/* <Select
                         showSearch
                         style={{ width: 200, textAlign: 'center' }}
                         allowClear = {true}
@@ -334,11 +361,19 @@ class EchartsAtlas extends Component {
                         >
                             <Option value="时间">时间</Option>
                             <Option value="送别">送别</Option>
-                            <Option value="汉朝">汉朝</Option>
                             <Option value="水">水</Option>
                             <Option value="酒">酒</Option>
                             <Option value="王昭君">王昭君</Option>
-                        </Select>
+                        </Select> */}
+                        <Dropdown overlay={menu} trigger={['click']}>
+                            <Input
+                            style={{ width: 180, textAlign: 'center' }}
+                            placeholder="请输入查询属性"
+                            value = {this.state.from}
+                            onChange={event => this.handleFrom(event)}
+                            allowClear = {true}
+                            />
+                        </Dropdown>
                         </Tooltip>
                         <Button type="primary" onClick={()=>{this.handleIn()}}>搜索</Button>
                     </InputGroup>
