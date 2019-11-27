@@ -18,8 +18,6 @@ var tempData = [];
 var map = [];
 var stack = [];
 
-
-
 class EchartsAtlas extends Component {
     constructor(props){
         super(props)
@@ -68,6 +66,22 @@ class EchartsAtlas extends Component {
                 }]
         })
     };
+
+    Intro1 = () => {
+        IntroJs().setOptions({
+            prevLabel: "上一步",
+            nextLabel: "下一步",
+            skipLabel: "跳过",
+            doneLabel: "结束",
+            showProgress:false,
+            exitOnEsc:true,
+            showButtons:true,
+            showStepNumbers:true,
+            keyboardNavigation:true,
+            overlayOpacity: 0,
+            showBullets:false,
+        }).goToStepNumber(1).start();
+    }
 
     openNotification = () => {
         const close = () => {};
