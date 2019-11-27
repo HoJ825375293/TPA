@@ -1,9 +1,12 @@
 import React, { Component,Fragment } from 'react';
-import { Button,Input, Tooltip, Select, message, Row, Menu, Dropdown, notification} from 'antd';
+import { Button,Input, Tooltip, Select, message, Row, Menu, Dropdown, Icon,notification} from 'antd';
 // import { GmlData } from './GmlData';
 import { GmlEdge } from './Edge';
 import { defaultData } from './DefaultData';
 import { defaultEdge } from './DefaultEdge';
+import introJs from 'intro.js';
+import { Steps, Hints } from 'intro.js-react';
+import 'intro.js/introjs.css';
 
 var echarts = require('echarts');
 const InputGroup = Input.Group;
@@ -15,6 +18,8 @@ var tempData = [];
 var map = [];
 var stack = [];
 
+
+
 class EchartsAtlas extends Component {
     constructor(props){
         super(props)
@@ -24,7 +29,7 @@ class EchartsAtlas extends Component {
             selc:"1",
         }
     }
-    
+
     componentDidMount(){
         myChart = echarts.init(document.getElementById("Atlas"));
         
@@ -64,18 +69,38 @@ class EchartsAtlas extends Component {
         })
     };
 
+    openNotification = () => {
+        const close = () => {};
+        const key = `open${Date.now()}`;
+        const btn = (
+          <Button type="primary" onClick={() => notification.close(key)}>
+            需要
+          </Button>
+        );
+        notification.open({
+          message: '需要帮助吗?',
+          description:
+            '请点击\'需要\'按钮来获取帮助',
+          icon: <Icon type="smile" style={{ color: '#FFC125' }} />,
+          duration: 3.5,
+          btn,
+          key,
+          onClose: close,
+        });
+    };
+    
+    componentWillMount(){
+        this.openNotification()
+    }
+
     handleFrom(event){
-        if(event && event.target && event.target.value){
-            let value = event.target.value;
-            this.setState({from:value })
-        }
+        let value = event.target.value;
+        this.setState({from:value})
     }
 
     handleTo(event){
-        if(event && event.target && event.target.value){
-            let value = event.target.value;
-            this.setState({to:value })
-        }
+        let value = event.target.value;
+        this.setState({to:value })
     }
 
     check(node1,node2){
@@ -350,21 +375,6 @@ class EchartsAtlas extends Component {
                         </Select>
                     
                         <Tooltip title="属性可以是任何时间,地点,景物,人">
-                        {/* <Select
-                        showSearch
-                        style={{ width: 200, textAlign: 'center' }}
-                        allowClear = {true}
-                        placeholder="点击--这里是一些示例"
-                        onChange={this.onChange}
-                        onSearch={this.onSearch}
-                        notFoundContent={null}
-                        >
-                            <Option value="时间">时间</Option>
-                            <Option value="送别">送别</Option>
-                            <Option value="水">水</Option>
-                            <Option value="酒">酒</Option>
-                            <Option value="王昭君">王昭君</Option>
-                        </Select> */}
                         <Dropdown overlay={menu} trigger={['click']}>
                             <Input
                             style={{ width: 180, textAlign: 'center' }}
@@ -424,13 +434,15 @@ class EchartsAtlas extends Component {
     render(){
         return (
             <div>
-            <div style={{width:'100%'}}>
+            <div style={{width:'100%'}}
+            data-step="1" data-intro="在这里选择输入模式" data-position="right" >
                 <Fragment>
                     {this.SearchBar()}  
                 </Fragment>
                 <Row style={{ height:10 }}></Row>        
             </div>    
-            <div id = "Atlas" style = {{width:'100%', height:540}}> </div>
+            <div id = "Atlas" data-step="2" data-intro="这里看结果" data-position="right" 
+            style = {{width:'100%', height:540}}> </div>
             </div>
         );
     }
