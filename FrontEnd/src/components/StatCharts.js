@@ -42,6 +42,9 @@ class StatCharts extends Component {
             },
             options:[
                 {
+                    legend: {
+                        data: ['各个时期']
+                    },
                     xAxis: {
                         type: 'category',
                         boundaryGap: false,
@@ -55,17 +58,20 @@ class StatCharts extends Component {
                     },
                     series: [
                     {
-                        name: '各时期信息',
+                        name: '各个时期',
                         type: 'line',
                         data: [56.08,70.75,78.49,75.24],
-                        markPoint: {
-                            data: [
-                                {type: 'max', name: '最高值'},
-                                {type: 'min', name: '最值'}
-                            ]
-                        },
+                        // markPoint: {
+                        //     data: [
+                        //         {type: 'max', name: '最高值'},
+                        //         {type: 'min', name: '最值'}
+                        //     ]
+                        // },
                     }]
                 },{
+                    legend: {
+                        data: ['过度时期']
+                    },
                     xAxis: {
                         type: 'category',
                         boundaryGap: false,
@@ -78,7 +84,7 @@ class StatCharts extends Component {
                         }
                     },
                     series: [{
-                        name: '时期过度信息',
+                        name: '过度时期',
                         type: 'line',
                         data: [61.36,74.49,77.24],
                     }]
