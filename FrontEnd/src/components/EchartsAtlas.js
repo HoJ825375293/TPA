@@ -4,7 +4,6 @@ import { Button,Input, Tooltip, Select, message, Row, Menu, Dropdown, Icon,notif
 import { GmlEdge } from './Edge';
 import { defaultData } from './DefaultData';
 import { defaultEdge } from './DefaultEdge';
-// import { Steps, Hints } from 'intro.js-react';
 import 'intro.js/introjs.css';
 
 var IntroJs = require('intro.js')
@@ -103,7 +102,7 @@ class EchartsAtlas extends Component {
             style: {
                 width: 400,
             },
-            duration: 3.5,
+            duration: 2,
             icon: <Icon type="smile" style={{ color: '#FFC125' }} />,
             btn,
             key
@@ -483,8 +482,8 @@ class EchartsAtlas extends Component {
 
     render(){
         return (
-            <div style={{backgroundColor:'#F7EED6'}}>
-            <div style={{width:'100%',backgroundColor:'#F7EED6'}}>
+            <div style={{}}>
+            <div style={{width:'100%'}}>
                 <Fragment>
                     <div data-step="3" data-intro="这里是主要输入框" data-position="right">
                     {this.SearchBar()}  
@@ -493,7 +492,7 @@ class EchartsAtlas extends Component {
                 <Row style={{ height:10 }}></Row>        
             </div>    
             <div id = "Atlas" data-step="4" data-intro="我们已经为你展示出一个实例结果,开始自己的探索吧!" data-position="right" 
-            style = {{width:'100%', backgroundColor:'#FFFAFA',height:540}}> </div>
+            style = {{width:'100%',height:540}}> </div>
             </div>
         );
     }

@@ -2,6 +2,7 @@ import React from 'react';
 import { Row, Col, Card } from 'antd';
 import EchartsAtlas from '../components/EchartsAtlas';
 import background from './BGP.jpg'
+import StatCharts from '../components/StatCharts'
 // import Compre from '../components/Compre';
 // import AccountBar from '../components/AccounBar';
 // import store from '../store'
@@ -19,7 +20,7 @@ const tabList = [
 
 const contentList = {
   图谱: <EchartsAtlas></EchartsAtlas>,
-  统计: <div>NOT YET</div>
+  统计: <StatCharts></StatCharts>
 };
 
 class HomePage extends React.Component {
@@ -52,8 +53,8 @@ class HomePage extends React.Component {
                 style={{ width: '100%'}}
                 title="古诗词图谱"
                 tabList={tabList}
-                headStyle = {{fontSize:'25px',backgroundColor:'#F7EED6'}}
-                bodyStyle = {{backgroundColor:'#F7EED6'}}
+                headStyle = {{fontSize:'25px'}}
+                bodyStyle = {{}}
                 activeTabKey={this.state.Key}
                 onTabChange={key => {
                   this.onTabChange(key);
