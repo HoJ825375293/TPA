@@ -53,10 +53,17 @@ class StatCharts extends Component {
                             formatter: '{value} %'
                         }
                     },
-                    series: [{
+                    series: [
+                    {
                         name: '各时期信息',
                         type: 'line',
                         data: [56.08,70.75,78.49,75.24],
+                        markPoint: {
+                            data: [
+                                {type: 'max', name: '最高值'},
+                                {type: 'min', name: '最值'}
+                            ]
+                        },
                     }]
                 },{
                     xAxis: {
