@@ -1,3 +1,4 @@
+//默认显示节点
 export const defaultData = [
 {name: "送别", itemStyle: {color: "rgb(123,104,238)"}, symbolSize: 50},
 {name: "离别", itemStyle: {color: "rgb(65,105,225)"}, symbolSize: 32},

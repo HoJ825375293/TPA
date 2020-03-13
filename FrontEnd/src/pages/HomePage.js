@@ -3,10 +3,11 @@ import { Row, Col, Card } from 'antd';
 import EchartsAtlas from '../components/EchartsAtlas';
 import background from './BGP.jpg'
 import StatCharts from '../components/StatCharts'
-// import Compre from '../components/Compre';
-// import AccountBar from '../components/AccounBar';
-// import store from '../store'
 
+//主页面 主要组件为card
+
+
+//card 跳转内容两个
 const tabList = [
   {
     key: '图谱',
@@ -18,14 +19,15 @@ const tabList = [
   },
 ];
 
+//渲染的card内两个内容，分别以两个组件整合
 const contentList = {
-  图谱: <EchartsAtlas></EchartsAtlas>,
-  统计: <StatCharts></StatCharts>
+  图谱: <EchartsAtlas></EchartsAtlas>,  //节点图
+  统计: <StatCharts></StatCharts>       //统计图
 };
 
 class HomePage extends React.Component {
 
-  state={
+  state={ //一开始显示的card
     Key: '图谱'
   }
 

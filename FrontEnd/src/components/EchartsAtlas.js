@@ -6,11 +6,14 @@ import { defaultData } from './DefaultData';
 import { defaultEdge } from './DefaultEdge';
 import 'intro.js/introjs.css';
 
+//这是新手引导的框架，了解一下就知道怎么用啦
 var IntroJs = require('intro.js')
-
+//echarts框架做节点与图
 var echarts = require('echarts');
+//为了有默认选项逻辑，一键删除，blabla的功能，把输入多写了点
 const InputGroup = Input.Group;
 const { Option } = Select;
+
 var data = [];
 var edges = [];
 var myChart;
@@ -30,7 +33,7 @@ class EchartsAtlas extends Component {
 
     componentDidMount(){
         myChart = echarts.init(document.getElementById("Atlas"));
-        
+        //默认显示的节点图
         myChart.setOption({
             series: [{
                 roam: true,
@@ -68,6 +71,7 @@ class EchartsAtlas extends Component {
         })
     };
 
+    //新手引导的框架配置
     Intro = (key) => {
 		notification.close(key)
 		IntroJs().setOptions({
@@ -86,7 +90,7 @@ class EchartsAtlas extends Component {
 		}).onexit(function () {
 		}).start();
 	}
-
+    //引导通知提示框组件
     openNotification = () => {
         const key = `open${Date.now()}`;
         const btn = (
@@ -108,11 +112,11 @@ class EchartsAtlas extends Component {
             key
         });
     };
-    
+    //在渲染前弹出提示框
     componentWillMount(){
         this.openNotification()
     }
-
+    //这些没加注释的部分是为了更改参数重新渲染
     handleFrom(event){
         let value = event.target.value;
         this.setState({from:value})
@@ -122,7 +126,7 @@ class EchartsAtlas extends Component {
         let value = event.target.value;
         this.setState({to:value })
     }
-
+    //探测两个节点之间的环
     check(node1,node2){
         let temp = []
         let tempName;
@@ -172,7 +176,7 @@ class EchartsAtlas extends Component {
             }
         }
     }
-
+    //两个节点之间的环的各种异常情况并处理输入
     handleIn(){
         tempData = [];
         if(this.state.selc === "1"){
@@ -393,7 +397,7 @@ class EchartsAtlas extends Component {
             from:key.item.props.children
         })
     }
-
+    //不太炫酷的输入框，但加了许多功能
     SearchBar=()=>{
         const modeType = this.state.selc;
         const menu = (

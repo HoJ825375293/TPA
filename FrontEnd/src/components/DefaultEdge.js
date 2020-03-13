@@ -1,3 +1,4 @@
+//默认显示边
 export const defaultEdge = [
 {source: "送别", target: "离别"},
 {source: "离别", target: "别离"},

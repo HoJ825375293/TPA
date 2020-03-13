@@ -1,3 +1,4 @@
+//算法输出的节点整合信息
 export const GmlData = [
   {
     id: 0

@@ -1,12 +1,14 @@
 import React, { Component} from 'react';
-
+//主要框架为 echarts
 var echarts = require('echarts');
 var myChart;
 
+//统计图
 class StatCharts extends Component {
     componentDidMount(){
         myChart = echarts.init(document.getElementById('Stat'));
         myChart.setOption({
+            //timeline组件，见echarts
             baseOption: {
                 timeline: {
                     axisType: 'category',
@@ -40,6 +42,7 @@ class StatCharts extends Component {
                     }
                 },
             },
+            //渲染的五个图
             options:[
                 {
                     legend: {
@@ -61,12 +64,25 @@ class StatCharts extends Component {
                         name: '各个时期',
                         type: 'line',
                         data: [56.08,70.75,78.49,75.24],
-                        // markPoint: {
-                        //     data: [
-                        //         {type: 'max', name: '最高值'},
-                        //         {type: 'min', name: '最值'}
-                        //     ]
-                        // },
+                    },
+                    //这些undefined用于避免继承其他timeline点内容，继承是这个组件默认的
+                    //因此才写的这么坑
+                    {
+                        name: 'undefined',
+                        type: 'line',
+                        data: [],
+                    },{
+                        name: 'undefined',
+                        type: 'line',
+                        data: [],
+                    },{
+                        name: 'undefined',
+                        type: 'line',
+                        data: [],
+                    },{
+                        name: 'undefined',
+                        type: 'line',
+                        data: [],
                     }]
                 },{
                     legend: {
@@ -87,6 +103,22 @@ class StatCharts extends Component {
                         name: '过度时期',
                         type: 'line',
                         data: [61.36,74.49,77.24],
+                    },{
+                        name: 'undefined',
+                        type: 'line',
+                        data: [],
+                    },{
+                        name: 'undefined',
+                        type: 'line',
+                        data: [],
+                    },{
+                        name: 'undefined',
+                        type: 'line',
+                        data: [],
+                    },{
+                        name: 'undefined',
+                        type: 'line',
+                        data: [],
                     }]
                 },{
                     legend: {
@@ -119,7 +151,11 @@ class StatCharts extends Component {
                             name: '冬',
                             type: 'line',
                             data: [37.24,25,4.08,12.24,9.18,3.57,5.1,2.04,1.53],
-                        },
+                        },{
+                            name: 'undefined',
+                            type: 'line',
+                            data: [],
+                        }
                     ]
                 },{
                     legend: {

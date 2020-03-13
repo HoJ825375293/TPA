@@ -1,3 +1,4 @@
+//算法输出边的整合信息
 export const GmlEdge = [
     {
         source: "时间",
